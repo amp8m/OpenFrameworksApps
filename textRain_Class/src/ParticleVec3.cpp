@@ -1,6 +1,8 @@
 #include "ParticleVec3.h"
 
-ParticleVec3::ParticleVec3(){
+ParticleVec3::ParticleVec3(ofTrueTypeFont f){
+    
+    font = f;
     radius = 5.0;
     friction = 0.01;
     mass = 1.0;
@@ -23,8 +25,15 @@ void ParticleVec3::update(){
     acceleration.set(0, 0, 0);
 }
 
-void ParticleVec3::draw(){
-    ofDrawCircle(position.x, position.y, radius);
+void ParticleVec3::draw(string d, float x, float y){
+//    ofDrawCircle(position.x, position.y, radius);
+    
+    /////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////
+    // PAO CHANGES  ---------------------
+    font.drawString(d, x, y);
+    /////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////
 }
 
 void ParticleVec3::addForce(ofVec3f _force){

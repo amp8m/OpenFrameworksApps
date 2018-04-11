@@ -2,8 +2,6 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-
-    
     // this calls the camera and B&W image next to it
     camera.setup(640,480);
     thresholdImg.allocate(640,480, OF_IMAGE_COLOR);
@@ -29,9 +27,9 @@ void ofApp::setup(){
         }
     }
 
-    countParticles = 100;
+    countParticles = 30;
     for (int i=0; i < countParticles; i++){ // this is creating particles
-        ParticleVec3 temp; // announcing ParticleVec3 with name "temp"
+        ParticleVec3 temp(font); // announcing ParticleVec3 with name "temp"
         // need to tell it where it is, where it starts
         temp.position = ofVec3f(ofRandom(camera.getWidth()),0);
         particles.push_back(temp); // this grows the array
@@ -126,22 +124,25 @@ void ofApp::draw(){
     
     ofSetColor(0,0,0);
     
+    for (int i=0; i < countParticles; i++){
+    
     int whichLine = ofGetSeconds()* 2 % linesOfTheFile.size(); // this makes each line fall every second
     string message = linesOfTheFile[whichLine];
-    for (int i=0; i<pts.size(); i++){
+//    for (int i=0; i<pts.size(); i++){
         string temp = "";
         temp += message [i % message.size()];
-        font.drawString(temp, pts[i].x, pts[i].y);
-    }
+//        font.drawString(temp, pts[i].x, pts[i].y);
+//    }
 
-    for (int i =0; i < countParticles; i++){
-        particles[i].draw(); // drew the particles from setup
-        int whichLine = ofGetSeconds()* 2 % linesOfTheFile.size(); // this makes each line fall every second
-        string message = linesOfTheFile[whichLine];
-        string temp = "";
-        temp += message [i % message.size()];
-        font.drawString(temp, pts[i].x, pts[i].y);
-        
+//    for (int i =0; i < countParticles; i++){
+//        particles[i].draw(); // drew the particles from setup
+//        int whichLine = ofGetSeconds()* 2 % linesOfTheFile.size(); // this makes each line fall every second
+//        string message = linesOfTheFile[whichLine];
+//        string temp = "";
+//        temp += message [i % message.size()];
+        particles[i].draw(temp, pts[i].x, pts[i].y);
+////        font.drawString(temp, pts[i].x, pts[i].y);
+    
     }
 
 }

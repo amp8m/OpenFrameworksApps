@@ -4,11 +4,11 @@
 class ParticleVec3 {
     
 public:
-    ParticleVec3();
+    ParticleVec3(ofTrueTypeFont f);
     void addForce(ofVec3f force);
     void addForce(float forceX, float forceY, float forceZ);
     void update();
-    void draw();
+    void draw(string d, float x, float y);
     
     void bounceOffWalls();
     void throughOffWalls();
@@ -31,5 +31,8 @@ public:
     float minx, miny, minz;
     float maxx, maxy, maxz;
     int faceRectIndex;
+    
+    ofTrueTypeFont font;
+
 };
 
