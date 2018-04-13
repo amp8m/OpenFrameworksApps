@@ -52,35 +52,25 @@ void ofApp::setup(){
     ofPath p = hersheyFont.getPath(m,ofGetWidth()/2,ofGetHeight()/2,12);
     vector < ofPolyline > outlines = p.getOutline();
     
-    words[67].target = ofPoint(400,100);
-    words[43].target = ofPoint(200,200);
+//    words[67].target = ofPoint(400,100);
+//    words[43].target = ofPoint(200,200);
     
     
+//    string m = "MYTH";
+//    ofPath p = hersheyFont.getPath(m,100,500,12);
+//    vector < ofPolyline > outlines = p.getOutline();
+    
+    int counter = 0;
     for (int i=0; i<outlines.size(); i++){
         ofPolyline newPoly = outlines[i].getResampledBySpacing(30);
         vector<ofPoint> points = newPoly.getVertices();
-        newPoly.getVertices().size();
-        
-        words[67].target = ofPoint(points.x, points.y);
-        words[43].target = ofPoint(points.x, points.y);
-        
-//        for (int j=0; j < points.size(); j++){
-//            if (i == 0 || i == 3 || i == 5 ) {
-//                hersheyFont.draw("cannot", (points[j]).x, (points[j]).y,.35, true);
-//            }
-//            if (i == 1 || i == 2 || i == 6 || i == 10 || i == 7) {
-//                hersheyFont.draw("not", (points[j]).x, (points[j]).y, .35, true);
-//            }
-//            if ((i == 4 && (j < 10)) || i == 8 || i == 9) {
-//                hersheyFont.draw("ought", (points[j]).x, (points[j]).y, .35, true);
-//            }
-//            if (i == 4 && j > 10) {
-//                hersheyFont.draw("not", (points[j]).x, (points[j]).y, .35, true);
-//            }
-//        }
+        for (int j = 0; j < points.size(); j++) {
+            words[counter].target = ofPoint(points[j]);
+            counter++;
+        }
     }
-    
-}
+    }
+
 
 //--------------------------------------------------------------
 void ofApp::update(){
@@ -100,8 +90,12 @@ void ofApp::draw(){
     float time = ofGetElapsedTimef();
     float slider = ofMap(mouseX,0,ofGetWidth(),0,1);
     
+//    for(int i=0; i<words.size(); i++){
+//    font.drawString(words[i].word, words[i].position.x + ofSignedNoise(words[i].position.x*0.1,words[i].position.y*0.1, time) * 100 * slider, words[i].position.y + ofSignedNoise(words[i].position.x*0.1, words[i].position.y*0.1, time+1000) * 100 * slider);
+//    }
+    
     for(int i=0; i<words.size(); i++){
-        
+    
         ofPoint pos = (1-slider) * words[i].position + slider*words[i].target;
         font.drawString(words[i].word, pos.x, pos.y);
     }
