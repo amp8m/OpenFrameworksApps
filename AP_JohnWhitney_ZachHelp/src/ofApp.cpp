@@ -56,6 +56,7 @@ void ofApp::scene1(float twetold){
     myPalette[6] = ofColor(251, 159, 167,100);
     myPalette[7] = ofColor(227, 138, 76,100);
     
+    
     ofBackground(0);
     
     // we replaced ofGetElapsedTimef() with twetold

@@ -5,7 +5,7 @@ void ofApp::setup(){
 
     ofBackground(255);
     
-    font.load("Helvetica-01.ttf", 15, true, true, true);
+    font.load("Helvetica-01.ttf", 20, true, true, true);
     
     positiveWords.push_back("able");
     positiveWords.push_back("will");
@@ -46,13 +46,20 @@ void ofApp::draw(){
     for (int j=0; j<280; j+=8){
         for (int i=0; i<400; i+=10){
             float t = ofGetElapsedTimef();
+            
+            
             float radius = ofMap(sin(t*i/100+j/100), -1, 1, 100, 400);
+            
+            
             ptx = xcenter + cos(t*j/200)*radius*i/100*2;
+            
             pty = ycenter + sin(t*j/200)*radius*i/100*2;
+            
             spin(ptx, pty, 10, sin(t+i)*8);
-            font.drawString(words[i%3].word,words[i%3].position.x, words[i%3].position.y);
+                font.drawString(words[i%3].word,words[i%3].position.x, words[i%3].position.y);
         }
     }
+
 }
 
 //--------------------------------------------------------------

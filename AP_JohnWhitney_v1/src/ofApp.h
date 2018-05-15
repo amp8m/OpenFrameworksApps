@@ -21,4 +21,7 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
+    float alpha = 0;
+    float alphaChange = 1;
+    
 };

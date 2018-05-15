@@ -2,8 +2,10 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    cam.initGrabber(640, 480);
+    cam.initGrabber(320, 240);
     tracker.setup();
+    
+    bDrawDebug = false;
     
     font.load("Helvetica-01.ttf", 15, true, true, true);
     
@@ -34,7 +36,9 @@ void ofApp::setup(){
     
     positiveWords.push_back("able");
     positiveWords.push_back("will");
-    positiveWords.push_back("can");
+    positiveWords.push_back("can.");
+    positiveWords.push_back("You");
+    
     
     negativeWords.push_back("not");
     negativeWords.push_back("ought");
@@ -58,6 +62,15 @@ void ofApp::setup(){
             pos.x += font.getStringBoundingBox(wordstemp[j],0,0).width + 10;
         }
     }
+    
+    for (int i = 0; i < words.size(); i++){
+        words[i].bPositive = false;
+        for (int j=0; j<positiveWords.size(); j++){
+            if (words[i].word == positiveWords[j]){
+                words[i].bPositive = true;
+            }
+        }
+    }
 }
 
 //--------------------------------------------------------------
@@ -68,6 +81,7 @@ void ofApp::update(){
         tracker.update(ofxCv::toCv(cam));
     }
     
+    
 }
 
 //--------------------------------------------------------------
@@ -76,42 +90,88 @@ void ofApp::draw(){
     ofBackground(255);
     ofSetColor(0);
     
+    
+    if (bDrawDebug){
+        
+        ofSetColor(255);
+        // if we are drawing debug, draw the video and face tracker
+        cam.draw(0,0);
+        tracker.draw();
+        
+        ofSetColor(0);
+    }
+    
+    
     float time = ofGetElapsedTimef();
     float slider = ofMap(mouseX,0,ofGetWidth(),1,0);
-    float xmovement = 500;
-    float xmovementTarget;
-    float ymovement = 300;
     float breathe = ofMap(sin(time),-1,1,0,255);
     
     xmovement = xmovement*0.9 + xmovementTarget*0.1;
+    ymovement = ymovement*0.9 + ymovementTarget*0.1;
+    
+    if(tracker.getFound()) {
+        xmovementTarget = 10;
+        ymovementTarget = 10;
+        ofSetColor(breathe);
+    } else {
+        xmovementTarget = 500;
+        ymovementTarget = 300;
+    }
+    
+    if (xmovement < 11) {
+        faceLock++;
+    
+    }else{
+        faceLock = 0;
+    }
+    
+    //cout << faceLock << endl;
+    
+    if (faceLock > 200) {
+        for(int i=0; i<words.size(); i++){
+            if (words[i].bPositive == false){
+                words[i].alpha = .90*words[i].alpha + 0.1*0;
+            }
+        }
+    } else {
+        for(int i=0; i<words.size(); i++){
+            if (words[i].bPositive == false){
+                words[i].alpha = .99*words[i].alpha + 0.01*1;
+            }
+        }
+    }
+    
+    if (faceLock > 400) {
+        for(int i=0; i<words.size(); i++){
+            if (words[i].bPositive == true){
+                words[i].alpha = .99*words[i].alpha + 0.01*0;
+            }
+        }
+    } else {
+        for(int i=0; i<words.size(); i++){
+            if (words[i].bPositive == true){
+                words[i].alpha = .99*words[i].alpha + 0.01*1;
+            }
+        }
+    }
+    
+    
     
     for(int i=0; i<words.size(); i++){
-        
-        if(tracker.getFound()) {
-            xmovementTarget = 10;
-            font.drawString(words[i].word,words[i].position.x + ofSignedNoise(words[i].position.x,words[i].position.y*.1, time * .4) * xmovementTarget, words[i].position.y + ofSignedNoise(words[i].position.x*0.1, words[i].position.y*0.1, time* .4));
-            ofSetColor(breathe);
-        } else {
-            xmovementTarget = 500;
+        ofSetColor(0,0,0, words[i].alpha * 255);
             font.drawString(words[i].word,words[i].position.x + ofSignedNoise(words[i].position.x,words[i].position.y*.1, time * .4) * xmovement, words[i].position.y + ofSignedNoise(words[i].position.x*0.1, words[i].position.y*0.1, time*.4) * ymovement);
-            
-        }
-        
     
     }
-    // trying to make negative words disappear if someone is still
-    if(tracker.getFound() && time >10) {
-        for(int i=0; i<negativeWords.size(); i++){
-            ofSetColor(255,255,255,0);
-        }
-    }
-    
     
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
 
+    
+    if (key == 'd'){
+        bDrawDebug = !bDrawDebug;
+    }
 }
 
 //--------------------------------------------------------------

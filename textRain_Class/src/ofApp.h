@@ -3,8 +3,6 @@
 #include "ofMain.h"
 #include <fstream>
 #include "ParticleVec3.h"
-//#include "ofxHersheyFont.h"
-//#include "simplexCharacterSet.h"
 
 class ofApp : public ofBaseApp{
 

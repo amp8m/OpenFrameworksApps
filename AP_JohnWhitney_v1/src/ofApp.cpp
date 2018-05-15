@@ -13,14 +13,10 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     
-  
-
-   
-    
     int w = ofGetWidth();
     int h = ofGetHeight();
     
-    int countSteps = 100;
+    int countSteps = 200;
     float totalWaves = 4;
     float time = ofGetElapsedTimef();
    
@@ -32,13 +28,20 @@ void ofApp::draw(){
 //    ofTranslate(-ofGetWidth()/2, -ofGetHeight() / 2);
     
     for (int j = 0; j < totalWaves; j++){
-    ofSetColor(240, 128, 128, time*20);
+//    ofSetColor(240, 128, 128, time*20);
+    ofSetColor(ofMap(sin(time), -1, 1, 199, 251), ofMap(sin(time*1.1), -1, 1, 30, 159), ofMap(sin(time*1.2), -1, 1, 17, 210), time*20);
+        alpha += alphaChange;
+        if (alpha >= 255){
+            alphaChange = -1;
+        } else if (alpha >= 0){
+            alphaChange = 1;
+        }
     ofBeginShape();
     
     //right side to center
     for (int i=0; i <countSteps; i++){
 //        float x = (w / 2);
-        float x = ofMap(j,0,totalWaves, w / 2 , w - 200 * sin(.4* time + j));
+        float x = ofMap(j,0,totalWaves, (w / 2)*sin(time) , w + 200 * sin(.4* time + j)); x+= 200 * sin(time * (j+1)) + 100 * sin(i / 100);
         float y = ofMap(i, 0, countSteps, 0, h);
         float inputa = ofMap(i, 0, countSteps, 0, PI);
 //        float amplitude = 50 * ofNoise (0.0025 * x, 0.0025 * y, .5 * time) + 20;
@@ -50,7 +53,7 @@ void ofApp::draw(){
     for (int i=0; i < countSteps; i++){
 //        for (int g=0; g < totalWaves; g++){
 //        float x = (w / 2);
-        float x = ofMap(j,0,totalWaves, w / 2, w * sin(.4* time + j));
+        float x = ofMap(j,0,totalWaves, (w / 2)*sin(time), w + 200 * sin(.4* time + j)); x+= 200 * sin(time * (j+1));
         float y = ofMap(i, 0, countSteps, h, 0);
         float inputb = ofMap(i, 0, countSteps, 0, PI);
 //        float amplitude = 50 * ofNoise(0.0025 * x, .0025*y, 0.5 * time) + 20;
